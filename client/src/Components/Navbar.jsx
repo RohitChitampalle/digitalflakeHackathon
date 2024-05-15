@@ -1,32 +1,22 @@
 import React from 'react';
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import "./nav.css"
 
-const Navbar = () => {
+const CustomNavbar = () => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-purple">
-      <div className="container">
-        <a className="navbar-brand" href="#">Your Logo</a>
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ml-auto">
-            <li className="nav-item active">
-              <a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">About</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">Services</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">Contact</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+  <Navbar className='container-nav' bg="purple" expand="lg" data-bs-theme="dark">
+        <Container>
+          <Navbar.Brand href="#home">Header</Navbar.Brand>
+          <Nav className="me-auto">
+            {/* <Nav.Link href="#home">Home</Nav.Link>
+            <Nav.Link href="#features">Features</Nav.Link>
+            <Nav.Link href="#pricing">Pricing</Nav.Link> */}
+          </Nav>
+        </Container>
+      </Navbar>
   );
 };
 
-export default Navbar;
+export default CustomNavbar;

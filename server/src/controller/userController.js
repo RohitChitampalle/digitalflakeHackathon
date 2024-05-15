@@ -9,19 +9,22 @@ const handleGetUsers = (req, res) => {
     try {
         let query = 'SELECT id,name,mobile,role,status FROM users';
         // Execute the query to fetch all users from the database
-        connection.query(query, (err, results) => {
+        connection.query(query, (err, results, fields) => {
             if (err) {
                 // If there's an error, return a 501 status code with the error message
                 return res.status(501).json([{ "Error": err.sqlMessage }]);
             }
-            // If successful, return a 200 status code with the list of users
-            return res.status(200).json(results);
+            // Extract column names from the fields object
+            const columnNames = fields.map(field => field.name);
+            // If successful, return a 200 status code with the list of users and column names
+            return res.status(200).json({ columnNames, results });
         });
     } catch (error) {
         // If there's an unexpected error, return a 501 status code with the error details
         return res.status(501).json([{ "Error Name": error.name, "Error Message": error.message }]);
     }
 };
+
 
 const handleAddNewUser = (req, res) => {
     try {

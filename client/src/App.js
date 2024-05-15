@@ -1,15 +1,19 @@
 // import logo from './logo.svg';
+import { RouterProvider } from 'react-router-dom';
 import './App.css';
-import Navbar from './Components/Navbar';
-// import CustomNavbar from './Components/Navbar';
+import router from './Routes/route';
 
 
 
 function App() {
   return (
   <div>
-      <Navbar />
+
+      < RouterProvider router={
+        router
+      } />
   </div>
+  
   );
 }
 
