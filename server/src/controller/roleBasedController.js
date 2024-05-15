@@ -3,7 +3,7 @@ const connection = require('../models/model');
 const handleGetRole = (req, res) => {
     try {
         // Construct the SQL query to fetch all role lists from the database
-        const query = 'SELECT * FROM role';
+        const query = 'SELECT rolename,id FROM role';
 
         // Execute the query to fetch all role lists
         connection.query(query, (err, results) => {

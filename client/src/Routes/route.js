@@ -28,6 +28,9 @@ const router = createBrowserRouter(
         },{
             path:"/add/user",
             element: <Adduser />
+        },{
+            path:"/edit/user/:id",
+            element:<Adduser/>
         }
     ]
 

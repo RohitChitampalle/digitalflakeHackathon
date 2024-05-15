@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Dashboard from "../../Dashboard/Dashboard";
+import Nav from "react-bootstrap/Nav";
+import { Link, useParams } from "react-router-dom"; // Import useParams to get URL params
 import "./add.css";
+import Dashboard from "../../Dashboard/Dashboard";
 
 function Adduser() {
+  const { userId } = useParams(); // Get the userId from URL params
   const [formData, setFormData] = useState({
     name: "",
     mobile: "",
@@ -14,6 +16,22 @@ function Adduser() {
     image: null,
   });
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+  useEffect(() => {
+    if (userId) {
+      // Fetch user data if userId exists
+      axios
+        .get(`http://localhost:8000/api/user/${userId}`)
+        .then((response) => {
+          const userData = response.data;
+          console.log("response==>", userData);
+          setFormData(userData);
+        })
+        .catch((error) => {
+          console.error("Error fetching user:", error);
+        });
+    }
+  }, [userId]); // Fetch data whenever userId changes
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,13 +53,13 @@ function Adduser() {
     const userData = new FormData();
     userData.append("name", formData.name);
     userData.append("mobile", formData.mobile);
-    userData.append("email", formData.email);
+    userData.append("mail_id", formData.email);
     userData.append("role", formData.role);
     userData.append("image", formData.image);
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/user/add",
+        "http://localhost:8000/api/user/set",
         userData,
         {
           headers: {
@@ -49,23 +67,15 @@ function Adduser() {
           },
         }
       );
-      console.log("User added successfully:", response.data);
+      console.log("User updated successfully:", response.data);
       // Show success toast
-      toast.success("User added successfully!");
+      toast.success("User updated successfully!");
       // Show success message popup
       setShowSuccessMessage(true);
-      // Reset form fields after successful submission
-      setFormData({
-        name: "",
-        mobile: "",
-        email: "",
-        role: "",
-        image: null,
-      });
     } catch (error) {
-      console.error("Error adding user:", error);
+      console.error("Error updating user:", error);
       // Show error toast with red background
-      toast.error("Error adding user. Please try again.", {
+      toast.error("Error updating user. Please try again.", {
         style: {
           background: "red",
         },
@@ -76,8 +86,15 @@ function Adduser() {
   return (
     <>
       <Dashboard />
+
       <div className="role-container">
-        <h1>User Add</h1>
+        {/* <h1>User </h1> */}
+        <button>
+          {" "}
+          <Nav.Link as={Link} to="/User">
+            Back
+          </Nav.Link>
+        </button>
         <form onSubmit={handleSubmit} encType="multipart/form-data">
           <div className="form-group">
             <label htmlFor="name">Name:</label>
@@ -85,7 +102,7 @@ function Adduser() {
               type="text"
               id="name"
               name="name"
-              value={formData.name}
+              value={formData.name || ""}
               onChange={handleChange}
               required
             />
@@ -96,7 +113,7 @@ function Adduser() {
               type="text"
               id="mobile"
               name="mobile"
-              value={formData.mobile}
+              value={formData.mobile || ""}
               onChange={handleChange}
               required
             />
@@ -107,7 +124,7 @@ function Adduser() {
               type="email"
               id="email"
               name="email"
-              value={formData.email}
+              value={formData.email || ""}
               onChange={handleChange}
               required
             />
@@ -118,7 +135,7 @@ function Adduser() {
               type="text"
               id="role"
               name="role"
-              value={formData.role}
+              value={formData.role || ""}
               onChange={handleChange}
               required
             />
@@ -137,7 +154,7 @@ function Adduser() {
         </form>
         {showSuccessMessage && (
           <div className="success-message">
-            User added successfully!
+            User updated successfully!
             <button onClick={() => setShowSuccessMessage(false)}>Close</button>
           </div>
         )}
