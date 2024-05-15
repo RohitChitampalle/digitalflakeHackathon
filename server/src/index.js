@@ -2,7 +2,6 @@ const express = require("express")
 const cors = require('cors');
 // const dotenv = require('dotenv')
 require('dotenv').config()
-
 const port = 8000;
 
 //db connection 
@@ -19,14 +18,15 @@ const app = express()
 
 //Middleware - Plugin
 app.use(cors());
-
-
+// app.use(express.json());
+// app.use(express.urlencoded({ extended: true }));
+// app.use(express.json()); 
 
 
 //Routes
 app.use("/api/user/", UserRouter)
 app.use("/api/", statusRouter)
-app.use('/api/role', roleRouter)
+app.use('/api/role/', roleRouter)
 
 
 app.listen(port, () => {
